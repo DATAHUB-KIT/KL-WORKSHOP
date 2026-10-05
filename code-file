@@ -17,3 +17,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 ###########################################################3
 from sklearn.neighbors import KNeighborsClassifier
 knn=KNeighborsClassifier(n_neighbors=3)
+##################################################
+knn.fit(X_train,y_train)
+knn.predict([[110,80,12,6,34,0.8,49]])
+###############################################
