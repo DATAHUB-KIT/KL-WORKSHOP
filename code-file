@@ -1,38 +1,10 @@
-#load data in to data frames
 import pandas as pd
-df=pd.read_csv("/content/adv.csv")
-df
-######################################333
-df.dropna(axis=0,inplace=True)
-df
-########################################
-X=df[['TV', 'Radio', 'Newspaper']]
-y=df['Sales']
-########################################
+import numpy as np
+
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-###############################################
+from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
-model=LinearRegression()
-model.fit(X_train,y_train)
-##############################################3
-model.predict([[200,56,41]])
-###########################################################################33
-implement linear regression for house price data
-#################################################################3
-import pandas as pd
-df=pd.read_csv("/content/USA_Housing.csv")
-df.head(1)
-#####################################################3
-X=df[['Avg. Area House Age', 'Avg. Area Number of Rooms',
-       'Avg. Area Number of Bedrooms']]
-y=df['Price']
-###########################################################
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-##################################################3
-from sklearn.linear_model import LinearRegression
-lr=LinearRegression()
-######################################
-lr.fit(X_train,y_train)
-lr.predict([[1,2,2]])
+from sklearn.metrics import mean_squared_error, r2_score
+
+from scipy.optimize import minimize
+######################################################3
