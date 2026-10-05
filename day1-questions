@@ -1,0 +1,64 @@
+A. Linear Regression & Error
+1. A Linear Regression model predicts a house price of n50 lakhs, but the actual price is n55 lakhs. What is
+the prediction error? What should the model try to do during training?
+2. Suppose your model makes large errors for many training examples. What would you try to change so
+that the overall error decreases?
+3. If a regression model fits the training data almost perfectly but performs badly on new data, what problem
+might be occurring? Why?
+4. Why can't we simply keep adding more features to Linear Regression to reduce training error? What could
+go wrong?
+B. Cost Function & Optimization
+5. Imagine two models: Model A has a cost of 100 and Model B has a cost of 25. Which model is currently
+better? What should training try to achieve?
+6. If the cost function is like a mountain landscape and you want to reach the lowest point, how can Gradient
+Descent help you?
+7. What do you think will happen if the learning rate is extremely large during Gradient Descent?
+8. What might happen if the learning rate is extremely small?
+9. During training, the cost decreases from 100 fi 60 fi 30 fi 15 fi 14. What does this tell you about the
+model's learning process?
+C. Overfitting & Regularization
+10. Your model performs at 99% accuracy on training data but only 65% on testing data. Would you trust the
+model? Why?
+11. A student says, “My model has almost zero training error, so it must be the best model.” Do you agree?
+Explain your reasoning.
+12. If a model is overfitting, would you prefer to make the model more complex or simpler? Why?
+13. Suppose a model has 50 features, but many of them contribute very little to prediction. What problems
+could this create?
+D. Lasso & Ridge Regression
+14. Lasso Regression makes some coefficients exactly zero. Why could this be useful when you have many
+features?
+15. You have 100 features, but you believe only 10 are really important. Would Lasso or Ridge be more
+useful for selecting features? Why?
+16. Ridge Regression usually makes coefficients smaller but does not normally make them exactly zero.
+Why might shrinking coefficients help a model?
+17. Suppose your model is overfitting because some coefficients have become extremely large. How could
+Ridge Regression help?
+18. If Lasso removes an important feature by setting its coefficient to zero, what could be the possible
+consequence?
+E. Logistic Regression
+19. A Logistic Regression model gives a probability of 0.82 for a customer buying a product. If the
+classification threshold is 0.5, what class would you predict? What if the threshold were changed to 0.9?
+20. You are predicting whether a student will pass or fail. Would Linear Regression or Logistic Regression be
+more appropriate? Explain your reasoning.
+F. K-Nearest Neighbors (KNN)
+21. In KNN, suppose K = 1. One nearby training point is an outlier. How might that affect the prediction?
+22. What do you expect to happen if K is increased from 3 to 50? Will the model become more sensitive or
+less sensitive to individual data points? Why?
+23. Why is feature scaling especially important for KNN? Imagine Age ranges from 18–60 while Income
+ranges from n20,000–n2,00,000.
+24. Suppose KNN gives 95% training accuracy but only 70% testing accuracy. What might this tell you about
+the choice of K?
+G. Final Challenge – Model Selection
+25. You have three models: Linear Regression has very low training error, while Lasso and Ridge have
+moderate training error. Which model would you choose if your main goal is to perform well on unseen data?
+What additional information would you need before deciding?
+26. KNN gives 92% accuracy and Logistic Regression gives 89%. Can you immediately say KNN is the
+better model? What else would you check?
+27. Your model's training error is decreasing continuously, but testing error starts increasing. What is
+happening? At what point would you stop training or change the model?
+28. If adding regularization increases training error slightly but improves testing performance, is that
+necessarily a bad thing? Explain.
+29. You have a dataset with highly correlated features. Would you consider Ridge or Lasso? What would you
+investigate before making the decision?
+30. Imagine you are the data scientist and must choose between Linear Regression, Logistic Regression,
+KNN, Lasso, and Ridge. Given a new problem, what questions would you ask before selecting an algorithm
