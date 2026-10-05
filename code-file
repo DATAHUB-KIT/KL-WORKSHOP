@@ -17,3 +17,15 @@ model=LinearRegression()
 model.fit(X_train,y_train)
 ##############################################3
 model.predict([[200,56,41]])
+###########################################################################33
+implement linear regression for house price data
+#################################################################3
+import pandas as pd
+df=pd.read_csv("/content/USA_Housing.csv")
+df.head(1)
+#####################################################3
+X=df[['Avg. Area House Age', 'Avg. Area Number of Rooms',
+       'Avg. Area Number of Bedrooms']]
+y=df['Price']
+###########################################################
+
