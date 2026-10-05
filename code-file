@@ -3,5 +3,7 @@ import pandas as pd
 df=pd.read_csv("/content/adv.csv")
 df
 ######################################333
-
+df.dropna(axis=0,inplace=True)
+df
+########################################
 
