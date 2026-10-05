@@ -1,23 +1,7 @@
+#load data in to data frames
 import pandas as pd
-df=pd.read_csv("/content/diabetes.csv")
-##########################################
-df.head()
-#################################
-df.columns
-#######################################
-X=df[['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin',
-       'BMI', 'DiabetesPedigreeFunction', 'Age']]
-y=df['Outcome']
-##################################################3
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-###############################################################
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-###########################################################3
-from sklearn.neighbors import KNeighborsClassifier
-knn=KNeighborsClassifier(n_neighbors=3)
-##################################################
-knn.fit(X_train,y_train)
-knn.predict([[110,80,12,6,34,0.8,49]])
-###############################################
+df=pd.read_csv("/content/adv.csv")
+df
+######################################333
+
+
