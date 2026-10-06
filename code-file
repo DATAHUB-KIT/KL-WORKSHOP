@@ -62,3 +62,11 @@ words = sentence.split()
 
 print(list(bigrams(words)))
 ###########################################
+from nltk import trigrams
+
+sentence = "I love Natural Language Processing"
+
+words = sentence.split()
+
+print(list(trigrams(words)))
+########################################
