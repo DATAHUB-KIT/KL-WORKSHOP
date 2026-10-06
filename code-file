@@ -3,3 +3,12 @@ text = "Hello World! This is NLP."
 text = text.lower()
 print(text)
 ###############################
+!pip install nltk
+
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+text = "Hello World! This is NLP."
+tokens = word_tokenize(text)
+print(tokens)
+#################################################
