@@ -46,3 +46,11 @@ text = "This is a #sample text with @special characters!"
 text = re.sub(r'[^\w\s]', '', text) 
 print(text) 
 #####################################################
+!pip install emoji
+import emoji
+text = "I like action shoes 👍 "
+# Convert emojis to text
+text = emoji.demojize(text)
+text = emoji.replace_emoji(text, replace="")
+print(text)
+####################################################
