@@ -32,3 +32,12 @@ words = ["running", "eating", "swimming"]
 stemmed_words = [stemmer.stem(word) for word in words]
 print(stemmed_words)
 #####################################################
+import nltk
+nltk.download('wordnet')
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+words = ["good", "better", "best"]
+lemmatized_words = [lemmatizer.lemmatize(word, pos='v')
+for word in words]
+print(lemmatized_words)
+######################################
