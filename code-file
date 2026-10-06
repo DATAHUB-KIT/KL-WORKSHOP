@@ -54,3 +54,11 @@ text = emoji.demojize(text)
 text = emoji.replace_emoji(text, replace="")
 print(text)
 ####################################################
+from nltk import bigrams
+
+sentence = "I love Natural Language Processing"
+
+words = sentence.split()
+
+print(list(bigrams(words)))
+###########################################
