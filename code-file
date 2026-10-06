@@ -70,3 +70,11 @@ words = sentence.split()
 
 print(list(trigrams(words)))
 ########################################
+from nltk import ngrams
+
+sentence = "I love Natural Language Processing"
+
+words = sentence.split()
+
+print(list(ngrams(words,4)))
+###########################################
