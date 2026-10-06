@@ -1,24 +1,333 @@
+import numpy as np
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-df=pd.read_csv("/content/diabetes.csv")
-df.head(1)
-##########################################
-X=df[['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin',
-       'BMI', 'DiabetesPedigreeFunction', 'Age']]
-y=df['Outcome']
-###########################################################
+import matplotlib.pyplot as plt
+
 from sklearn.model_selection import train_test_split
-X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,
-                                               random_state=10)
-#######################################################
-knn=KNeighborsClassifier(n_neighbors=12)
-knn.fit(X_train,y_train)
-################################
-log=LogisticRegression()
-log.fit(X_train,y_train)
-################################
-dt=DecisionTreeClassifier()
-dt.fit(X_train,y_train)
-#######################################
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    classification_report,
+    ConfusionMatrixDisplay
+)
+
+
+# ==========================================
+# CREATE EMPLOYEE DATA
+# ==========================================
+
+np.random.seed(42)
+
+n = 1000
+
+df = pd.DataFrame({
+
+    "Age": np.random.randint(22, 61, n),
+
+    "MonthlyIncome": np.random.randint(
+        25000, 150000, n
+    ),
+
+    "YearsAtCompany": np.random.randint(
+        1, 21, n
+    ),
+
+    "JobSatisfaction": np.random.randint(
+        1, 5, n
+    ),
+
+    "WorkLifeBalance": np.random.randint(
+        1, 5, n
+    ),
+
+    "OverTime": np.random.randint(
+        0, 2, n
+    ),
+
+    "JobLevel": np.random.randint(
+        1, 6, n
+    ),
+
+    "DistanceFromHome": np.random.randint(
+        1, 31, n
+    ),
+
+    "TrainingHours": np.random.randint(
+        10, 61, n
+    ),
+
+    "PerformanceRating": np.random.randint(
+        1, 5, n
+    ),
+
+    "CompaniesWorked": np.random.randint(
+        1, 8, n
+    )
+})
+
+
+# ==========================================
+# CREATE CHURN
+# ==========================================
+
+score = (
+
+    1.5 * df["OverTime"]
+
+    + 0.8 * (5 - df["JobSatisfaction"])
+
+    + 0.6 * (5 - df["WorkLifeBalance"])
+
+    + 0.03 * df["DistanceFromHome"]
+
+    + 0.8 * (df["MonthlyIncome"] < 40000)
+
+    - 0.08 * df["YearsAtCompany"]
+
+    - 0.25 * df["JobLevel"]
+
+    + 0.3 * df["CompaniesWorked"]
+)
+
+probability = 1 / (
+    1 + np.exp(-score + 3)
+)
+
+df["Churn"] = (
+    np.random.random(n) < probability
+).astype(int)
+
+
+# ==========================================
+# X AND y
+# ==========================================
+
+X = df.drop(
+    "Churn",
+    axis=1
+)
+
+y = df["Churn"]
+
+
+# ==========================================
+# TRAIN TEST SPLIT
+# ==========================================
+
+X_train, X_test, y_train, y_test = train_test_split(
+
+    X,
+    y,
+
+    test_size=0.20,
+
+    random_state=42,
+
+    stratify=y
+)
+
+
+# ==========================================
+# STANDARDIZATION
+# ==========================================
+
+scaler = StandardScaler()
+
+X_train_scaled = scaler.fit_transform(
+    X_train
+)
+
+X_test_scaled = scaler.transform(
+    X_test
+)
+
+
+# ==========================================
+# ANN
+# ==========================================
+
+ann = MLPClassifier(
+
+    hidden_layer_sizes=(32, 16, 8),
+
+    activation="relu",
+
+    solver="adam",
+
+    alpha=0.0001,
+
+    batch_size=32,
+
+    learning_rate_init=0.001,
+
+    max_iter=500,
+
+    early_stopping=True,
+
+    validation_fraction=0.2,
+
+    n_iter_no_change=20,
+
+    random_state=42
+)
+
+
+# ==========================================
+# TRAIN
+# ==========================================
+
+ann.fit(
+    X_train_scaled,
+    y_train
+)
+
+
+# ==========================================
+# PREDICTION
+# ==========================================
+
+y_pred = ann.predict(
+    X_test_scaled
+)
+
+
+# ==========================================
+# ACCURACY
+# ==========================================
+
+accuracy = accuracy_score(
+    y_test,
+    y_pred
+)
+
+print(
+    "ANN Accuracy:",
+    accuracy
+)
+
+
+# ==========================================
+# CLASSIFICATION REPORT
+# ==========================================
+
+print(
+    classification_report(
+        y_test,
+        y_pred,
+        target_names=[
+            "Stay",
+            "Churn"
+        ]
+    )
+)
+
+
+# ==========================================
+# CONFUSION MATRIX
+# ==========================================
+
+cm = confusion_matrix(
+    y_test,
+    y_pred
+)
+
+ConfusionMatrixDisplay(
+    confusion_matrix=cm,
+    display_labels=[
+        "Stay",
+        "Churn"
+    ]
+).plot()
+
+plt.title(
+    "Employee Churn - ANN"
+)
+
+plt.show()
+
+
+# ==========================================
+# LOSS CURVE
+# ==========================================
+
+plt.figure(figsize=(8,5))
+
+plt.plot(
+    ann.loss_curve_
+)
+
+plt.xlabel("Iteration")
+plt.ylabel("Loss")
+
+plt.title(
+    "ANN Training Loss"
+)
+
+plt.grid()
+
+plt.show()
+
+
+# ==========================================
+# NEW EMPLOYEE
+# ==========================================
+
+new_employee = pd.DataFrame({
+
+    "Age": [28],
+
+    "MonthlyIncome": [35000],
+
+    "YearsAtCompany": [2],
+
+    "JobSatisfaction": [2],
+
+    "WorkLifeBalance": [2],
+
+    "OverTime": [1],
+
+    "JobLevel": [1],
+
+    "DistanceFromHome": [22],
+
+    "TrainingHours": [20],
+
+    "PerformanceRating": [3],
+
+    "CompaniesWorked": [4]
+})
+
+
+new_employee_scaled = scaler.transform(
+    new_employee
+)
+
+
+prediction = ann.predict(
+    new_employee_scaled
+)
+
+churn_probability = ann.predict_proba(
+    new_employee_scaled
+)[0][1]
+
+
+print(
+    "\nChurn Probability:",
+    f"{churn_probability:.2%}"
+)
+
+
+if prediction[0] == 1:
+
+    print(
+        "Prediction: HIGH CHURN RISK"
+    )
+
+else:
+
+    print(
+        "Prediction: LOW CHURN RISK"
+    )
