@@ -1,61 +1,51 @@
+
+https://www.rmofspringfield.ca/p/meeting-audio-files
+
+!pip install -q openai-whisper
+#!pip install -q google-genai
+!apt-get -qq install ffmpeg
+
+
 from google.colab import files
-from PIL import Image
-
 uploaded = files.upload()
+audio_file = list(uploaded.keys())[0]
+print(audio_file)
 
-image = Image.open(list(uploaded.keys())[0]).convert("RGB")
 
-image
-###################################################
-from transformers import CLIPProcessor
-from transformers import CLIPModel
+import whisper
+model = whisper.load_model("base")
+result = model.transcribe(audio_file)
+transcript = result["text"]
+print(transcript)
 
-model = CLIPModel.from_pretrained(
-    "openai/clip-vit-base-patch32"
+
+
+prompt = f"""
+
+You are an expert meeting assistant.
+
+Generate professional meeting minutes.
+
+Transcript:
+
+{transcript}
+
+Include:
+
+1. Meeting Summary
+2. Key Discussion Points
+3. Decisions Taken
+4. Next Meeting
+
+Present everything in Markdown.
+
+"""
+
+
+
+response = client.models.generate_content(
+    model="gemini-flash-latest",
+    contents=prompt
 )
 
-processor = CLIPProcessor.from_pretrained(
-    "openai/clip-vit-base-patch32"
-)
-###############################################3
-labels = [
-    "cat",
-    "dog",
-    "car",
-    "bicycle",
-    "horse"
-]
-
-inputs = processor(
-    text=labels,
-    images=image,
-    return_tensors="pt",
-    padding=True
-)
-
-outputs = model(**inputs)
-
-logits = outputs.logits_per_image
-
-probs = logits.softmax(dim=1)
-
-print(probs)
-################################################3
-from transformers import BlipProcessor
-from transformers import BlipForConditionalGeneration
-
-processor = BlipProcessor.from_pretrained(
-    "Salesforce/blip-image-captioning-base"
-)
-
-model = BlipForConditionalGeneration.from_pretrained(
-    "Salesforce/blip-image-captioning-base"
-)
-
-inputs = processor(image, return_tensors="pt")
-
-out = model.generate(**inputs)
-
-caption = processor.decode(out[0], skip_special_tokens=True)
-
-print(caption)
+print(response.text)
