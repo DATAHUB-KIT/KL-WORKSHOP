@@ -41,3 +41,48 @@ for chunk in chunks:
 embeddings = np.array(embeddings)
 
 print(text[:2000])
+################################################################33
+question = input("Ask HR question: ")
+
+result = client.models.embed_content(
+    model="gemini-embedding-001",
+    contents=question
+)
+
+q_embedding = np.array(result.embeddings[0].values)
+
+scores = cosine_similarity(
+    [q_embedding],
+    embeddings
+)[0]
+
+top = scores.argsort()[-3:][::-1]
+
+context = "\n\n".join(chunks[i] for i in top)
+
+print(context)
+###################################################3
+prompt = f"""
+Answer the question using only the context.
+
+Context:
+{context}
+
+Question:
+{question}
+
+If the answer is not in the context,
+say "Not found in the HR documents."
+
+Answer:
+"""
+
+answer = client.models.generate_content(
+    model="gemini-3.6-flash",
+    contents=prompt
+)
+
+print("\nANSWER:\n")
+print(answer.text)
+###########################################################3
+
