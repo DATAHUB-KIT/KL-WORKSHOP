@@ -1,60 +1,9 @@
+from google.colab import files
+from PIL import Image
 
-!pip install genai
-################################
-from google import genai
-from google.colab import userdata
-GEMINI_API_KEY=userdata.get('yourkey')
-client=genai.Client(api_key=GEMINI_API_KEY)
-###########################################3
-response=client.models.generate_content(
-    model="gemini-3.1-flash-lite",
-    contents="Hello gemini my name is scott how are you"
-)
-###############################################
-print(response.text)
-#############################################
-article="""
-In 2018, Trump imposed tariffs on steel and aluminum imports.[35] He also initiated the China–United States trade war, 
-which subjected 60% of US-China trade to 20% tariffs.[36] Most sources say that the trade war did not achieve its goals: instead,
- the U.S. trade deficit widened, growth slowed, manufacturing jobs did not return, and prices rose.[37]
+uploaded = files.upload()
 
-In May 2019, Trump used tariff threats of up to 25% on Mexico to negotiate an expansion of his "Remain in Mexico" 
-policy and the deployment of Mexican soldiers to help control illegal immigration.[38] The Mexican government, 
-led by Andrés Manuel López Obrador, deployed nearly 15,000 troops to the Mexico–US border and 6,500 troops to the Guatemala–Mexico border.[39][40]
+image = Image.open(list(uploaded.keys())[0]).convert("RGB")
 
-In 2020, the US, Mexico and Canada renegotiated the North American Free Trade Agreement (NAFTA) 
-as the United States–Mexico–Canada Agreement (USMCA) and recommitted to 0% tariffs on most products traded between the three countries. 
-Five weeks after the USMCA went into effect, Trump used an exemption for national security concerns to implement a 10% tariff on
- Canadian aluminum after claiming it was flooding the US market.[41][42] He withdrew the tariff a month later, three hours before the 29th Canadian Ministry planned to retaliate.[43]
-
-2024 presidential campaign
-
-
-"""
-##########################################
-prompt=f"""
-
-summarize below article in 50 words
-{article}
-
-"""
-#########################################3
-response=client.models.generate_content(
-    model="gemini-3.1-flash-lite",
-    contents=prompt
-
-)
-####################################3
-print(response.text)
-#########################################
-from diffusers import DiffusionPipeline
-import torch
-pipe=DiffusionPipeline.from_pretrained ("stabilityai/stable-diffusion-xl-base-1.0",  torch_dtype=torch.float16,  use_safetensors=True,  variant="fp16")
-pipe.to("cuda")
-#######################################################3
-prompt="monkey    "
-###############################
-images=pipe(prompt=prompt,
-            num_inference_steps=100,
-            guidance_scale=9).images[0]
-images
+image
+###################################################
