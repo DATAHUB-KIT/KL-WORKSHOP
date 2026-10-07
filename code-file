@@ -2,3 +2,42 @@
 !pip install sentence-transformers faiss-cpu
 !pip install -q pypdf
 
+#################################################
+from pypdf import PdfReader
+from sklearn.metrics.pairwise import cosine_similarity
+from google import genai
+from google.colab import files
+from google.colab import userdata
+import numpy as np
+###################################################
+uploaded = files.upload()
+
+pdf = list(uploaded.keys())[0]
+
+text = ""
+
+for page in PdfReader(pdf).pages:
+    text += page.extract_text() + "\n"
+##########################################################
+words = text.split()
+
+chunks = [
+    " ".join(words[i:i+300])
+    for i in range(0, len(words), 300)
+]
+
+print(chunks)
+###############################################################33
+!pip install google.genai
+embeddings = []
+
+for chunk in chunks:
+    result = client.models.embed_content(
+        model="gemini-embedding-001",
+        contents=chunk
+    )
+    embeddings.append(result.embeddings[0].values)
+
+embeddings = np.array(embeddings)
+
+print(text[:2000])
